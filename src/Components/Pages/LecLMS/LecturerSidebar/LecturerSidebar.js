@@ -34,22 +34,23 @@ const LecturerSidebar = () => {
            </Typography>
       <List>
         <ListItem button>
-
           <ListItemText primary="Dashboard" />
-          
         </ListItem>
+
         <ListItem button>
-          <ListItemText primary="My Schedule" />
+          <ListItemText primary="Course Materials" />
         </ListItem>
+
         <ListItem button>
-          <ListItemText primary="My Events" />
-          
+          <ListItemText primary="Class & Timetables" />
         </ListItem>
+
         <ListItem button>
-          <ListItemText primary="Manage Course Materials" />
+          <ListItemText primary="Manage Events" />
         </ListItem>
+
         <ListItem button>
-          <ListItemText primary="Notifications" />
+          <ListItemText primary="Announcement" />
         </ListItem>
       </List>
     </Box>
