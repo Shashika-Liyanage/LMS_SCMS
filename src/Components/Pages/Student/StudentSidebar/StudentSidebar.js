@@ -60,12 +60,12 @@ const StudentSidebar = () => {
   return (
     <>
       {/* Top AppBar for Mobile */}
-      <AppBar position="fixed" sx={{ backgroundColor: "#1E3A8A", display: { md: "none" } }}>
+      <AppBar position="fixed" sx={{ backgroundColor: "#1E3A8A", display: { md: "none" }, minHeight: '80px' }}>
         <Toolbar>
           <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
-            <Menu />
+            <Menu  sx={{marginTop: '15px'}} />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, marginTop: '15px' }}>
            Smart Campus Management System - Student
           </Typography>
         </Toolbar>
