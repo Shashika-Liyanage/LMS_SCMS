@@ -1,8 +1,12 @@
-import './App.css';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Routers from "./Router/Routers";
 
 function App() {
   return (
-   <h1>first Commit</h1>
+    <BrowserRouter>
+      <Routers />
+    </BrowserRouter>
   );
 }
 
