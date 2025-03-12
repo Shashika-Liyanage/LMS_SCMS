@@ -34,23 +34,29 @@ const AdminSidebar = () => {
       </Typography>
       <List>
         <ListItem button>
-
           <ListItemText primary="Dashboard" />
-          
         </ListItem>
+
         <ListItem button>
-          <ListItemText primary="My Schedule" />
+          <ListItemText primary="Manage User" />
         </ListItem>
-        <ListItem button>
-          <ListItemText primary="My Events" />
-          
-        </ListItem>
+
         <ListItem button>
           <ListItemText primary="Manage Course Materials" />
         </ListItem>
+
         <ListItem button>
-          <ListItemText primary="Notifications" />
+          <ListItemText primary="Manage class & Timetables" />
         </ListItem>
+        
+        <ListItem button>
+          <ListItemText primary="Manage Events" />
+        </ListItem>
+
+        <ListItem button>
+          <ListItemText primary="Manage Announcement" />
+        </ListItem>
+        
       </List>
     </Box>
   );

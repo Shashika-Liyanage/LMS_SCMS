@@ -34,23 +34,25 @@ const StudentSidebar = () => {
          </Typography>
       <List>
         <ListItem button>
-
           <ListItemText primary="Dashboard" />
-          
         </ListItem>
+
+        <ListItem button>
+          <ListItemText primary="Course Materials" />
+        </ListItem>
+
         <ListItem button>
           <ListItemText primary="My Schedule" />
         </ListItem>
+
         <ListItem button>
           <ListItemText primary="My Events" />
-          
         </ListItem>
-        <ListItem button>
-          <ListItemText primary="Manage Course Materials" />
-        </ListItem>
+      
         <ListItem button>
           <ListItemText primary="Notifications" />
         </ListItem>
+        
       </List>
     </Box>
   );
