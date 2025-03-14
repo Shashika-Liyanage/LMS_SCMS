@@ -18,6 +18,8 @@ const Routers = () => {
       <Route path="/" element={<StudentL />}>
         <Route index element={<Navigate to="/view-home" />} />
         <Route path = "/student" element={<Student />} />
+        <Route path="/course-materials" element={<CourseMaterial />} />
+        <Route path="/course-details" element={<CourseDetails />} />
 
       </Route>
 
