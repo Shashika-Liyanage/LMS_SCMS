@@ -1,115 +1,93 @@
 import React from 'react'
 import AdminSidebar from './AdminSidebar/AdminSidebar'
 import Navbar from '../../NavBar/Navbar'
-import { Box, Grid, Typography, Button, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Box, Grid, Typography } from '@mui/material';
 
 function Admin() {
+  const navigate = useNavigate(); 
   return (
     <>
     <AdminSidebar/>
     <Navbar/>
+    
 
-    <Box sx={{ flexGrow: 1, padding: 3, marginLeft: '250px' }}>
-
-    <Typography variant="h4" gutterBottom>
-        Home
-      </Typography>
-
-        {/* Grid Container */}
-        <Grid container spacing={3}>
-          {/* CERTIFICATE */}
-          <Grid item xs={12} sm={6} md={6}>
-            <Paper
-              elevation={3}
+  {/* Main Content Area */}
+  <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '80vh',
+          ml: { md: '240px' }, // Adjust for sidebar
+          mt: { xs: '80px', md: '0px' }, // Space for navbar
+          px: { xs: 2, sm: 4 }, // Add padding on small screens
+        }}
+      >
+        <Grid container spacing={3} sx={{ maxWidth: 600 }}>  {/* Increased spacing for gap */}
+          {/* Certificate */}
+          <Grid item xs={12} sm={6}>
+            <Box
               sx={{
-                padding: 3,
+                backgroundColor: '#83C1E9',
+                padding: '40px',
                 textAlign: 'center',
-                backgroundColor: '#f5f5f5', // Light gray background
-                '&:hover': { backgroundColor: '#e0e0e0' }, // Hover effect
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
-                CERTIFICATE
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#1976d2', color: '#fff' }} // Custom button style
-              >
-                View Details
-              </Button>
-            </Paper>
+              <Typography fontWeight="bold">Certificate</Typography>
+            </Box>
           </Grid>
 
-          {/* DIPLOMA */}
-          <Grid item xs={12} sm={6} md={6}>
-            <Paper
-              elevation={3}
+          {/* Diploma */}
+          <Grid item xs={12} sm={6}>
+            <Box
               sx={{
-                padding: 3,
+                backgroundColor: '#83C1E9',
+                padding: '40px',
                 textAlign: 'center',
-                backgroundColor: '#f5f5f5', // Light gray background
-                '&:hover': { backgroundColor: '#e0e0e0' }, // Hover effect
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
-                DIPLOMA
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#1976d2', color: '#fff' }} // Custom button style
-              >
-                View Details
-              </Button>
-            </Paper>
+              <Typography fontWeight="bold">Diploma</Typography>
+            </Box>
           </Grid>
 
           {/* HND */}
-          <Grid item xs={12} sm={6} md={6}>
-            <Paper
-              elevation={3}
+          <Grid item xs={12} sm={6}>
+            <Box
               sx={{
-                padding: 3,
+                backgroundColor: '#83C1E9',
+                padding: '40px',
                 textAlign: 'center',
-                backgroundColor: '#f5f5f5', // Light gray background
-                '&:hover': { backgroundColor: '#e0e0e0' }, // Hover effect
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
-                HND
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#1976d2', color: '#fff' }} // Custom button style
-              >
-                View Details
-              </Button>
-            </Paper>
+              <Typography fontWeight="bold">HND</Typography>
+            </Box>
           </Grid>
 
-          {/* DEGREE */}
-          <Grid item xs={12} sm={6} md={6}>
-            <Paper
-              elevation={3}
+          {/* Degree */}
+          <Grid item xs={12} sm={6}>
+            <Box
+             onClick={() => navigate('degreeAdmin')}
               sx={{
-                padding: 3,
+                backgroundColor: '#83C1E9',
+                padding: '40px',
                 textAlign: 'center',
-                backgroundColor: '#f5f5f5', // Light gray background
-                '&:hover': { backgroundColor: '#e0e0e0' }, // Hover effect
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
-                DEGREE
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#1976d2', color: '#fff' }} // Custom button style
-              >
-                View Details
-              </Button>
-            </Paper>
+              <Typography fontWeight="bold">Degree</Typography>
+            </Box>
           </Grid>
         </Grid>
       </Box>
+   
     </>
   )
 }
