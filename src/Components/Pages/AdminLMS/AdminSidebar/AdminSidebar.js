@@ -20,12 +20,14 @@ import { Menu } from "@mui/icons-material";
 
 const AdminSidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeButton, setActiveButton] = useState(null); // Track active button
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const handleButtonClick = (action) => {
+    setActiveButton(action); // Set active button when clicked
     console.log(`Clicked: ${action}`); // Replace with your logic
   };
 
@@ -39,20 +41,28 @@ const AdminSidebar = () => {
         padding: "10px",
       }}
     >
-      <Typography variant="h5" sx={{ fontWeight: "bold", padding: "16px 0" }}>
+      <Typography variant="h5" sx={{ fontWeight: "bold", padding: "8px 0" }}>
         SCMS - Admin
       </Typography>
-      <List>
+      <List
+        sx={{
+          display: "flex", // Align items in one row
+          flexDirection: "column",
+          gap: "4px",
+        }}
+      >
         {/* Dashboard Button */}
         <ListItem>
           <Button
             fullWidth
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: "#3B82F6",
               color: "#fff",
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
+              borderColor: activeButton === "Dashboard" ? "#2563EB" : "transparent", // Highlight clicked button
+              paddingLeft: "16px", // Ensure icon starts from the left
+              justifyContent: "flex-start", // Align icon to the left
             }}
             startIcon={<DashboardIcon />}
             onClick={() => handleButtonClick("Dashboard")}
@@ -65,12 +75,14 @@ const AdminSidebar = () => {
         <ListItem>
           <Button
             fullWidth
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: "#3B82F6",
               color: "#fff",
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
+              borderColor: activeButton === "Manage User" ? "#2563EB" : "transparent", // Highlight clicked button
+              paddingLeft: "16px", // Ensure icon starts from the left
+              justifyContent: "flex-start", // Align icon to the left
             }}
             startIcon={<SupervisedUserCircleIcon />}
             onClick={() => handleButtonClick("Manage User")}
@@ -83,12 +95,14 @@ const AdminSidebar = () => {
         <ListItem>
           <Button
             fullWidth
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: "#3B82F6",
               color: "#fff",
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
+              borderColor: activeButton === "Manage Course Materials" ? "#2563EB" : "transparent", // Highlight clicked button
+              paddingLeft: "16px", // Ensure icon starts from the left
+              justifyContent: "flex-start", // Align icon to the left
             }}
             startIcon={<AutoStoriesIcon />}
             onClick={() => handleButtonClick("Manage Course Materials")}
@@ -101,12 +115,14 @@ const AdminSidebar = () => {
         <ListItem>
           <Button
             fullWidth
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: "#3B82F6",
               color: "#fff",
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
+              borderColor: activeButton === "Manage Class & Timetables" ? "#2563EB" : "transparent", // Highlight clicked button
+              paddingLeft: "16px", // Ensure icon starts from the left
+              justifyContent: "flex-start", // Align icon to the left
             }}
             startIcon={<DateRangeIcon />}
             onClick={() => handleButtonClick("Manage Class & Timetables")}
@@ -119,12 +135,14 @@ const AdminSidebar = () => {
         <ListItem>
           <Button
             fullWidth
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: "#3B82F6",
               color: "#fff",
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
+              borderColor: activeButton === "Manage Events" ? "#2563EB" : "transparent", // Highlight clicked button
+              paddingLeft: "16px", // Ensure icon starts from the left
+              justifyContent: "flex-start", // Align icon to the left
             }}
             startIcon={<FestivalIcon />}
             onClick={() => handleButtonClick("Manage Events")}
@@ -137,12 +155,14 @@ const AdminSidebar = () => {
         <ListItem>
           <Button
             fullWidth
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: "#3B82F6",
               color: "#fff",
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
+              borderColor: activeButton === "Manage Announcement" ? "#2563EB" : "transparent", // Highlight clicked button
+              paddingLeft: "16px", // Ensure icon starts from the left
+              justifyContent: "flex-start", // Align icon to the left
             }}
             startIcon={<CampaignIcon />}
             onClick={() => handleButtonClick("Manage Announcement")}
@@ -201,8 +221,6 @@ const AdminSidebar = () => {
       >
         {drawerContent}
       </Drawer>
-
-      
     </>
   );
 };
