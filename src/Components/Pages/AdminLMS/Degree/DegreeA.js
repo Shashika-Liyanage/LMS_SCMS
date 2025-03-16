@@ -12,19 +12,17 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import AdminSidebar from '../AdminSidebar/AdminSidebar';
 import Navbar from '../../../NavBar/Navbar';
 
 const initialCategories = [
-  { title: 'Software Engineering', items: ['Course Work', 'Subject Materials', 'Student Details'] },
-  { title: 'Data Science', items: ['Course Work', 'Subject Materials', 'Student Details'] },
-  { title: 'Cyber Security', items: ['Course Work', 'Subject Materials', 'Student Details'] },
-  { title: 'Artificial Intelligence', items: ['Course Work', 'Subject Materials', 'Student Details'] },
+  { title: 'Bsc (Hons) in Software Engineering', items: ['Advanced Data Modelling', 'Software Development Practice', 'Mobile Application Development'] },
+  { title: 'Bsc (Hons) in Data Science', items: ['Course Work', 'Subject Materials', 'Student Details'] },
+  { title: 'Bsc (Hons) in Cyber Security', items: ['Information Security', 'Networking', 'Student Details'] },
+  { title: 'Bsc (Hons) in Artificial Intelligence', items: ['Machine Learning', 'Subject Materials', 'Student Details'] },
 ];
 
 const DegreeA = () => {
@@ -171,17 +169,7 @@ const DegreeA = () => {
                     }}
                   >
                     <Typography sx={{ fontWeight: 'bold', color: '#333' }}>{item}</Typography>
-                    <Box>
-                      <IconButton size="small">
-                        <AddIcon sx={{ color: '#1976D2' }} />
-                      </IconButton>
-                      <IconButton size="small">
-                        <EditIcon sx={{ color: '#1976D2' }} />
-                      </IconButton>
-                      <IconButton size="small">
-                        <DeleteIcon sx={{ color: '#d32f2f' }} />
-                      </IconButton>
-                    </Box>
+                    
                   </Box>
                 ))}
               </Box>
