@@ -30,7 +30,7 @@ const Routers = () => {
         {/* <Route index element={<Navigate to="/view-home" />} /> */}DegreeSubject
         <Route path = "/admin" element={<Admin />} />
         <Route path = "degreeAdmin" element={<DegreeA />} />
-        <Route path = "degreeAdmin" element={<DegreeSubject />} />
+        <Route path = "degreeSubject" element={<DegreeSubject />} />
 
 
       </Route>
