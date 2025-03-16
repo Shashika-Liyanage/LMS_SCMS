@@ -98,7 +98,7 @@ const DegreeA = () => {
       <AdminSidebar />
       <Navbar />
 
-      <Box sx={{ marginLeft: '250px', marginRight: '40px', p: 2, bgcolor: 'white', minHeight: '80vh' }}>
+      <Box sx={{ marginLeft: '300px', marginRight: '40px', p: 2, bgcolor: 'white', minHeight: '80vh' }}>
         {/* Add Category Button in the Top Right */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
           <Button
