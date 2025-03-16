@@ -1,7 +1,10 @@
 import React from "react";
 import { Box, Typography, Button, Link } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 const DegreeSubject = () => {
+
+  const { subjectName } = useParams();
   return (
     <Box
       sx={{
@@ -15,7 +18,7 @@ const DegreeSubject = () => {
     >
       {/* Title outside the box */}
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 2, alignSelf: "flex-start", ml: 3 }}>
-        Advanced Data Modeling
+        {subjectName}
       </Typography>
 
       {/* Main content container */}
