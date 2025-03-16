@@ -17,6 +17,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
@@ -118,6 +120,10 @@ function Student() {
     setCurrentMonthIndex((prevIndex) => (prevIndex - 1 + 12) % 12);
   };
 
+  // Use Media Query hook to detect screen size
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detect mobile screen size
+
   return (
     <>
       <StudentSidebar />
@@ -127,19 +133,20 @@ function Student() {
       <Box
         sx={{
           display: "flex",
-          marginLeft: "240px",
+          marginLeft: isMobile ? 0 : "240px", // Adjust margin for mobile
           alignItems: "center",
           padding: 2,
           backgroundColor: "#f5f5f5",
           borderBottom: "1px solid #e0e0e0",
+          flexDirection: isMobile ? "column" : "row", // Stack elements on mobile
         }}
       >
         {/* Greeting Text */}
         <Box>
-          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+          <Typography variant="body1" sx={{ fontWeight: "bold",fontSize:24, marginLeft:"20px" }}>
             Good Afternoon
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" , marginLeft:"20px", fontSize:16,fontWeight:500 }}>
             Hi, {userName}
           </Typography>
         </Box>
@@ -150,6 +157,7 @@ function Student() {
             marginLeft: "auto", // Push to the right
             color: "#ff9800", // Orange color
             fontSize: "2rem",
+            marginTop: isMobile ? "10px" : 0, // Adjust margin for mobile
           }}
         />
       </Box>
@@ -157,14 +165,15 @@ function Student() {
       {/* Main Content */}
       <Box
         sx={{
-          marginLeft: "240px",
+          marginLeft: isMobile ? 0 : "240px",
           padding: 3,
           display: "flex",
-          gap: 4, // Space between calendar and course details
+          gap: 4,
+          flexDirection: isMobile ? "column" : "row", // Stack elements on mobile
         }}
       >
         {/* Calendar Section */}
-        <Box sx={{ flex: 2 }}>
+        <Box sx={{ flex: isMobile ? 1 : 2, marginLeft:"10px" }}>
           <Paper elevation={3} sx={{ padding: 3 }}>
             {/* Month Navigation */}
             <Box
@@ -231,7 +240,7 @@ function Student() {
         </Box>
 
         {/* Course Details Section */}
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: isMobile ? 1 : 1 }}>
           <Paper elevation={3} sx={{ padding: 2 }}>
             {/* Course Code */}
             <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 1 }}>
@@ -280,30 +289,30 @@ function Student() {
 
           {/* List of Subjects/Modules */}
           <List>
-  {course.modules.map((module) => (
-    <ListItem
-      button
-      key={module.id}
-      onClick={() => handleSubjectClick(module.id)}
-      sx={{
-        backgroundColor: "#3f51b5",
-        color: "#fff",
-        marginBottom: 1,
-        borderRadius: "8px",
-        "&:hover": {
-          backgroundColor: "#303f9f",
-          transform: "scale(1.02)",
-          transition: "transform 0.2s ease-in-out",
-        },
-      }}
-    >
-      <ListItemText
-        primary={module.name}
-        primaryTypographyProps={{ fontWeight: "bold" }}
-      />
-    </ListItem>
-  ))}
-</List>
+            {course.modules.map((module) => (
+              <ListItem
+                button
+                key={module.id}
+                onClick={() => handleSubjectClick(module.id)}
+                sx={{
+                  backgroundColor: "#3f51b5",
+                  color: "#fff",
+                  marginBottom: 1,
+                  borderRadius: "8px",
+                  "&:hover": {
+                    backgroundColor: "#303f9f",
+                    transform: "scale(1.02)",
+                    transition: "transform 0.2s ease-in-out",
+                  },
+                }}
+              >
+                <ListItemText
+                  primary={module.name}
+                  primaryTypographyProps={{ fontWeight: "bold" }}
+                />
+              </ListItem>
+            ))}
+          </List>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
