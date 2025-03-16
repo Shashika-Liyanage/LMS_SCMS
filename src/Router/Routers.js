@@ -13,6 +13,7 @@ import StudentDetails from '../Components/Pages/LecLMS/StudentDetails';
 import CourseMaterial from '../Components/Pages/CourseMaterial';
 import CourseDetails from '../Components/Pages/Student/CourseDetails';
 import DegreeA from '../Components/Pages/AdminLMS/Degree/DegreeA';
+import DegreeSubject from '../Components/Pages/AdminLMS/DegreeSubject';
 
 const Routers = () => {
   return (
@@ -26,9 +27,11 @@ const Routers = () => {
       </Route>
 
       <Route path="/admin" element={<AdminL />}>
-        {/* <Route index element={<Navigate to="/view-home" />} /> */}
+        {/* <Route index element={<Navigate to="/view-home" />} /> */}DegreeSubject
         <Route path = "/admin" element={<Admin />} />
         <Route path = "degreeAdmin" element={<DegreeA />} />
+        <Route path = "degreeAdmin" element={<DegreeSubject />} />
+
 
       </Route>
 
