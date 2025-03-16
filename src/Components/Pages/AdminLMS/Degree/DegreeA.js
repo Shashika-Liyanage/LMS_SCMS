@@ -12,15 +12,15 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-
+import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
-import AddIcon from '@mui/icons-material/Add'; // "+" icon
+import AddIcon from '@mui/icons-material/Add';
 import AdminSidebar from '../AdminSidebar/AdminSidebar';
 import Navbar from '../../../NavBar/Navbar';
 
 const initialCategories = [
-  { title: 'Bsc (Hons) in Software Engineering', items: ['Advanced Data Modelling', 'Software Development Practice', 'Mobile Application Development'] },
+  { title: 'Bsc (Hons) in Software Engineering', items: ['Advanced Data Modeling', 'Software Development Practice', 'Mobile Application Development'] },
   { title: 'Bsc (Hons) in Data Science', items: ['Course Work', 'Subject Materials', 'Student Details'] },
   { title: 'Bsc (Hons) in Cyber Security', items: ['Information Security', 'Networking', 'Student Details'] },
   { title: 'Bsc (Hons) in Artificial Intelligence', items: ['Machine Learning', 'Subject Materials', 'Student Details'] },
@@ -236,7 +236,11 @@ const DegreeA = () => {
                       borderBottom: '2px solid #1976D2',
                     }}
                   >
-                    <Typography sx={{ fontWeight: 'bold', color: '#333' }}>{item}</Typography>
+                    <Typography sx={{ fontWeight: 'bold', color: '#333' }}>
+                      <Link to={`/degree-subject/${item}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        {item}
+                      </Link>
+                    </Typography>
                   </Box>
                 ))}
               </Box>
