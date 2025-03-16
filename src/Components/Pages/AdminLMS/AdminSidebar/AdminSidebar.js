@@ -46,7 +46,7 @@ const AdminSidebar = () => {
       </Typography>
       <List
         sx={{
-          display: "flex", // Align items in one row
+          display: "flex",
           flexDirection: "column",
           gap: "4px",
         }}
@@ -61,8 +61,8 @@ const AdminSidebar = () => {
               "&:hover": { backgroundColor: "#2563EB" },
               marginTop: "8px",
               borderColor: activeButton === "Dashboard" ? "#2563EB" : "transparent", // Highlight clicked button
-              paddingLeft: "16px", // Ensure icon starts from the left
-              justifyContent: "flex-start", // Align icon to the left
+              paddingLeft: "16px",
+              justifyContent: "flex-start",
             }}
             startIcon={<DashboardIcon />}
             onClick={() => handleButtonClick("Dashboard")}
