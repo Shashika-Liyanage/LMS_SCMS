@@ -3,7 +3,7 @@ import AdminSidebar from './AdminSidebar/AdminSidebar'
 import Navbar from '../../NavBar/Navbar'
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Typography, IconButton } from '@mui/material';
-import { Book, Badge, Assignment, SchoolOutlined } from '@mui/icons-material'; // Updated MUI icons
+import { Book, Badge, Assignment, SchoolOutlined } from '@mui/icons-material';
 
 function Admin() {
   const navigate = useNavigate(); 
