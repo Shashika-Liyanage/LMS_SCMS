@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -11,6 +11,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -18,24 +20,43 @@ import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import AddIcon from '@mui/icons-material/Add';
 import AdminSidebar from '../AdminSidebar/AdminSidebar';
 import Navbar from '../../../NavBar/Navbar';
-
-const initialCategories = [
-  { title: 'Bsc (Hons) in Software Engineering', items: ['Advanced Data Modeling', 'Software Development Practice', 'Mobile Application Development'] },
-  { title: 'Bsc (Hons) in Data Science', items: ['Course Work', 'Subject Materials', 'Student Details'] },
-  { title: 'Bsc (Hons) in Cyber Security', items: ['Information Security', 'Networking', 'Student Details'] },
-  { title: 'Bsc (Hons) in Artificial Intelligence', items: ['Machine Learning', 'Subject Materials', 'Student Details'] },
-];
+import { database } from '../../../../Services/Firebase/Firebase-config';
+import { ref, push, set, onValue } from 'firebase/database';
 
 const DegreeA = () => {
-  const [openAddModal, setOpenAddModal] = useState(false); // For adding a new category
-  const [openDetailsModal, setOpenDetailsModal] = useState(false); // For showing degree course details
-  const [openAddSubjectModal, setOpenAddSubjectModal] = useState(false); // For adding a new subject
-  const [categories, setCategories] = useState(initialCategories);
+  const [openAddModal, setOpenAddModal] = useState(false); 
+  const [openDetailsModal, setOpenDetailsModal] = useState(false); 
+  const [openAddSubjectModal, setOpenAddSubjectModal] = useState(false); 
+  const [categories, setCategories] = useState([]); 
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [newSubjectName, setNewSubjectName] = useState(''); // For adding a new subject
-  const [selectedCategory, setSelectedCategory] = useState(null); // To track which category is selected for details
-  const [degreeDetails, setDegreeDetails] = useState(''); // Degree course details
-  const [selectedCategoryForSubject, setSelectedCategoryForSubject] = useState(null); // To track which category is selected for adding a subject
+  const [newSubjectName, setNewSubjectName] = useState(''); 
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [degreeDetails, setDegreeDetails] = useState('');
+  const [selectedCategoryForSubject, setSelectedCategoryForSubject] = useState(null);
+
+  // Snackbar state
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
+
+  // Fetch data from Firebase on component mount
+  useEffect(() => {
+    const categoriesRef = ref(database, 'categories');
+    onValue(categoriesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        // Convert Firebase object to an array
+        const categoriesArray = Object.keys(data).map((key) => ({
+          id: key, // Add a unique ID for each category
+          title: data[key].title,
+          items: data[key].items ? Object.values(data[key].items) : [],
+        }));
+        setCategories(categoriesArray);
+      } else {
+        setCategories([]); 
+      }
+    });
+  }, []);
 
   // Handle opening/closing the "Add Category" modal
   const handleOpenAddModal = () => setOpenAddModal(true);
@@ -47,7 +68,7 @@ const DegreeA = () => {
   // Handle opening/closing the "Degree Details" modal
   const handleOpenDetailsModal = (category) => {
     setSelectedCategory(category);
-    setDegreeDetails(`Details for ${category.title}`); // Default details (can be customized)
+    setDegreeDetails(`Details for ${category.title}`);
     setOpenDetailsModal(true);
   };
   const handleCloseDetailsModal = () => {
@@ -57,7 +78,7 @@ const DegreeA = () => {
 
   // Handle opening/closing the "Add Subject" modal
   const handleOpenAddSubjectModal = (category) => {
-    setSelectedCategoryForSubject(category); // Set the selected category for adding a subject
+    setSelectedCategoryForSubject(category);
     setOpenAddSubjectModal(true);
   };
   const handleCloseAddSubjectModal = () => {
@@ -65,25 +86,50 @@ const DegreeA = () => {
     setNewSubjectName('');
   };
 
-  // Add a new category
+  // Handle Snackbar close
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  // Add a new category to Firebase
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
-      const newCategory = { title: newCategoryName, items: [] }; // Empty items array for the new category
-      setCategories([...categories, newCategory]);
+      const newCategory = { title: newCategoryName, items: {} }; // Initialize items as an object for Firebase
+      const categoryRef = ref(database, 'categories'); // Reference to the 'categories' node in Firebase
+      const newCategoryRef = push(categoryRef); // Push a new category to Firebase
+      set(newCategoryRef, newCategory); // Set the data for the new category
       handleCloseAddModal();
+
+      // Show Snackbar
+      setSnackbarMessage('Category added successfully!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
     }
   };
 
-  // Add a new subject to a category
+  // Add a new subject to a category in Firebase
   const handleAddSubject = () => {
     if (newSubjectName.trim() && selectedCategoryForSubject) {
       const updatedCategories = categories.map((category) =>
-        category.title === selectedCategoryForSubject.title
-          ? { ...category, items: [...category.items, newSubjectName] }
+        category.id === selectedCategoryForSubject.id
+          ? { ...category, items: [...(category.items || []), newSubjectName] } // Ensure items is an array
           : category
       );
       setCategories(updatedCategories);
+
+      // Update Firebase with the new subject
+      const categoryRef = ref(database, `categories/${selectedCategoryForSubject.id}/items`);
+      push(categoryRef, newSubjectName); // Push the new subject to Firebase
+
       handleCloseAddSubjectModal();
+
+      // Show Snackbar
+      setSnackbarMessage('Subject added successfully!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
     }
   };
 
@@ -216,7 +262,7 @@ const DegreeA = () => {
                   <Typography sx={{ fontWeight: 'bold', color: '#1976D2', mb: 1 }}>{category.title}</Typography>
                   <Box>
                     <IconButton onClick={() => handleOpenAddSubjectModal(category)}>
-                      <AddIcon sx={{ color: '#1976D2' }} /> {/* "+" icon */}
+                      <AddIcon sx={{ color: '#1976D2' }} />
                     </IconButton>
                     <IconButton onClick={() => handleOpenDetailsModal(category)}>
                       <ReportGmailerrorredIcon sx={{ color: '#000000' }} />
@@ -237,7 +283,7 @@ const DegreeA = () => {
                     }}
                   >
                     <Typography sx={{ fontWeight: 'bold', color: '#333' }}>
-                      <Link to={`/degree-subject/${item}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Link to={`/degree-subject/${encodeURIComponent(item)}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         {item}
                       </Link>
                     </Typography>
@@ -248,6 +294,18 @@ const DegreeA = () => {
           ))}
         </Grid>
       </Box>
+
+      {/* Snackbar for Success Messages */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000} // Auto-close after 3 seconds
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Position at top-right
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

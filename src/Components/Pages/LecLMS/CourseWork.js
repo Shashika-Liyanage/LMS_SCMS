@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Modal, Button, TextField } from '@mui/material';
+import { Box, Typography, Modal, Button } from '@mui/material';
 
 function CourseWork({ subject, onClose }) {
   return (
