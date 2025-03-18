@@ -18,6 +18,7 @@ import TimeTable from '../Components/Pages/Student/components/TimeTable';
 import StudentRegistrationForm from '../Components/Pages/AdminLMS/user/student/StudentRegistrationForm';
 import LecturerRegistrationForm from '../Components/Pages/AdminLMS/user/lecture/LectureRegistrationForm';
 import TimeSheduleRoute from '../Components/Pages/AdminLMS/class-time-tables/ClassTimesRoute'
+import User from '../Components/Pages/AdminLMS/user/user'
 
 const Routers = () => {
   return (
@@ -34,6 +35,10 @@ const Routers = () => {
       <Route path="/admin" element={<AdminL />}>
         {/* <Route index element={<Navigate to="/view-home" />} /> */}
         <Route path = "/admin" element={<Admin />} />
+
+        <Route path = "user" element={<User />} />
+        {/* <Route path = "/user/new" element={<Admin />} /> */}
+
         <Route path = "degreeAdmin" element={<DegreeA />} />
         <Route path="degree-subject/:subjectName" element={<DegreeSubject />} />
         <Route path = "register/student" element={<StudentRegistrationForm />} />

@@ -25,17 +25,18 @@ import {
   Divider,
   IconButton
 } from '@mui/material';
-import { CircularProgress, Alert, Snackbar, Backdrop } from '@mui/material';
+import { CircularProgress, Backdrop } from '@mui/material';
 import {
   Search as SearchIcon,
   Add as PlusIcon,
-  FilterList as FilterIcon,
   Person as UserIcon,
   Group as TeamIcon,
   MoreVert as EllipsisIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
-import { getAllUsers, deleteUser } from '../../../../service/firebase/user.service';
+import { getAllUsers, deleteUser } from '../../../../Services/Firebase/user.service';
+import AdminSidebar from '../AdminSidebar/AdminSidebar';
+import Navbar from '../../../NavBar/Navbar';
 
 // Dummy data
 const dummyUsers = [
@@ -266,7 +267,10 @@ const User = () => {
   const departments = [...new Set(userData.map(user => user.department))];
 
   return (
-    <Card className="user-dashboard" variant="outlined" sx={{ width: '100%' }}>
+    <>
+    <Navbar />
+    <AdminSidebar />
+    <Card className="user-dashboard" variant="outlined" sx={{ width: '1250', marginLeft: '260px' }}>
       <CardContent>
         <Box sx={{ mb: 2 }}>
           <Typography variant="h5" color="textSecondary">
@@ -333,8 +337,8 @@ const User = () => {
           </Grid>
         </Grid>
 
-        <TableContainer component={Paper} variant="outlined">
-          <Table sx={{ minWidth: 650 }} aria-label="user table">
+        <TableContainer sx={{ width: 1250 }} component={Paper} variant="outlined">
+          <Table sx={{ width: 1250 }} aria-label="user table">
             <TableHead>
               <TableRow>
                 <TableCell>
@@ -487,6 +491,7 @@ const User = () => {
         </Box>
       </Backdrop>
     </Card>
+    </>
   );
 };
 

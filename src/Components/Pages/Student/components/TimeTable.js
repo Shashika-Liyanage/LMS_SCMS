@@ -31,6 +31,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import WarningIcon from '@mui/icons-material/Warning';
 
+
 // Importing dummy data
 import {
     generateTimeTableEvents,
@@ -38,6 +39,8 @@ import {
     getTodayLectures,
     searchLecturesByDate
 } from './timeutils';
+import AdminSidebar from '../../AdminLMS/AdminSidebar/AdminSidebar';
+import Navbar from '../../../NavBar/Navbar';
 
 const TimeTable = () => {
     const calendarRef = useRef(null);
@@ -148,8 +151,12 @@ const TimeTable = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-            <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+        <>
+        <Navbar />
+        <AdminSidebar />
+
+        <Container sx={{ mt: 4, mb: 8, marginLeft:30, width: '100' }}>
+            <Paper elevation={3} sx={{ p: 3, mb: 4, marginTop:-3.6 }}>
                 <Typography variant="h4" gutterBottom>
                     Course Timetable
                 </Typography>
@@ -217,7 +224,7 @@ const TimeTable = () => {
                 </Grid>
 
                 {/* Calendar Component */}
-                <Box sx={{ height: '500px', mt: 3 }}>
+                <Box sx={{ height: '500px', mt: 3}}>
                     <FullCalendar
                         ref={calendarRef}
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -371,6 +378,7 @@ const TimeTable = () => {
                 </Grid>
             </Grid>
         </Container>
+        </>
     )
 };
 
