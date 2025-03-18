@@ -14,6 +14,10 @@ import CourseMaterial from '../Components/Pages/CourseMaterial';
 import CourseDetails from '../Components/Pages/Student/CourseDetails';
 import DegreeA from '../Components/Pages/AdminLMS/Degree/DegreeA';
 import DegreeSubject from '../Components/Pages/AdminLMS/DegreeSubject';
+import TimeTable from '../Components/Pages/Student/components/TimeTable';
+import StudentRegistrationForm from '../Components/Pages/AdminLMS/user/student/StudentRegistrationForm';
+import LecturerRegistrationForm from '../Components/Pages/AdminLMS/user/lecture/LectureRegistrationForm';
+import TimeSheduleRoute from '../Components/Pages/AdminLMS/class-time-tables/ClassTimesRoute'
 
 const Routers = () => {
   return (
@@ -23,14 +27,19 @@ const Routers = () => {
         <Route path = "/student" element={<Student />} />
         <Route path="/course-materials" element={<CourseMaterial />} />
         <Route path="/course-details" element={<CourseDetails />} />
+        <Route path="/timetable" element={<TimeTable />} />
 
       </Route>
 
       <Route path="/admin" element={<AdminL />}>
-        {/* <Route index element={<Navigate to="/view-home" />} /> */}DegreeSubject
+        {/* <Route index element={<Navigate to="/view-home" />} /> */}
         <Route path = "/admin" element={<Admin />} />
         <Route path = "degreeAdmin" element={<DegreeA />} />
         <Route path="degree-subject/:subjectName" element={<DegreeSubject />} />
+        <Route path = "register/student" element={<StudentRegistrationForm />} />
+        <Route path = "register/lecturer" element={<LecturerRegistrationForm />} />
+
+        <Route path = "class-times/*" element={<TimeSheduleRoute />} />
 
 
       </Route>
