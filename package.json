@@ -12,12 +12,13 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.7",
-    "@mui/x-date-pickers": "^7.28.0",
+    "@mui/x-date-pickers": "^7.27.3",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
     "date-fns": "^2.29.3",
+    "dayjs": "^1.11.13",
     "firebase": "^11.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -48,5 +49,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "cross-env": "^7.0.3",
+    "dotenv-webpack": "^8.1.0",
+    "env-cmd": "^10.1.0"
   }
 }

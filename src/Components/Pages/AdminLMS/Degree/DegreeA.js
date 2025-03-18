@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,52 +11,29 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Snackbar,
-  Alert,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
-import AddIcon from '@mui/icons-material/Add';
 import AdminSidebar from '../AdminSidebar/AdminSidebar';
 import Navbar from '../../../NavBar/Navbar';
-import { database } from '../../../../config/firebase.config';
-import { ref, push, set, onValue } from 'firebase/database';
+
+const initialCategories = [
+  { title: 'Software Engineering', items: ['Course Work', 'Subject Materials', 'Student Details'] },
+  { title: 'Data Science', items: ['Course Work', 'Subject Materials', 'Student Details'] },
+  { title: 'Cyber Security', items: ['Course Work', 'Subject Materials', 'Student Details'] },
+  { title: 'Artificial Intelligence', items: ['Course Work', 'Subject Materials', 'Student Details'] },
+];
 
 const DegreeA = () => {
-  const [openAddModal, setOpenAddModal] = useState(false); 
-  const [openDetailsModal, setOpenDetailsModal] = useState(false); 
-  const [openAddSubjectModal, setOpenAddSubjectModal] = useState(false); 
-  const [categories, setCategories] = useState([]); 
+  const [openAddModal, setOpenAddModal] = useState(false); // For adding a new category
+  const [openDetailsModal, setOpenDetailsModal] = useState(false); // For showing degree course details
+  const [categories, setCategories] = useState(initialCategories);
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [newSubjectName, setNewSubjectName] = useState(''); 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [degreeDetails, setDegreeDetails] = useState('');
-  const [selectedCategoryForSubject, setSelectedCategoryForSubject] = useState(null);
-
-  // Snackbar state
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
-
-  // Fetch data from Firebase on component mount
-  useEffect(() => {
-    const categoriesRef = ref(database, 'categories');
-    onValue(categoriesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        // Convert Firebase object to an array
-        const categoriesArray = Object.keys(data).map((key) => ({
-          id: key, // Add a unique ID for each category
-          title: data[key].title,
-          items: data[key].items ? Object.values(data[key].items) : [],
-        }));
-        setCategories(categoriesArray);
-      } else {
-        setCategories([]); 
-      }
-    });
-  }, []);
+  const [selectedCategory, setSelectedCategory] = useState(null); // To track which category is selected for details
+  const [degreeDetails, setDegreeDetails] = useState(''); // Degree course details
 
   // Handle opening/closing the "Add Category" modal
   const handleOpenAddModal = () => setOpenAddModal(true);
@@ -68,7 +45,7 @@ const DegreeA = () => {
   // Handle opening/closing the "Degree Details" modal
   const handleOpenDetailsModal = (category) => {
     setSelectedCategory(category);
-    setDegreeDetails(`Details for ${category.title}`);
+    setDegreeDetails(`Details for ${category.title}`); // Default details (can be customized)
     setOpenDetailsModal(true);
   };
   const handleCloseDetailsModal = () => {
@@ -76,60 +53,12 @@ const DegreeA = () => {
     setDegreeDetails('');
   };
 
-  // Handle opening/closing the "Add Subject" modal
-  const handleOpenAddSubjectModal = (category) => {
-    setSelectedCategoryForSubject(category);
-    setOpenAddSubjectModal(true);
-  };
-  const handleCloseAddSubjectModal = () => {
-    setOpenAddSubjectModal(false);
-    setNewSubjectName('');
-  };
-
-  // Handle Snackbar close
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
-
-  // Add a new category to Firebase
+  // Add a new category
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
-      const newCategory = { title: newCategoryName, items: {} }; // Initialize items as an object for Firebase
-      const categoryRef = ref(database, 'categories'); // Reference to the 'categories' node in Firebase
-      const newCategoryRef = push(categoryRef); // Push a new category to Firebase
-      set(newCategoryRef, newCategory); // Set the data for the new category
+      const newCategory = { title: newCategoryName, items: ['Course Work', 'Subject Materials', 'Student Details'] };
+      setCategories([...categories, newCategory]);
       handleCloseAddModal();
-
-      // Show Snackbar
-      setSnackbarMessage('Category added successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    }
-  };
-
-  // Add a new subject to a category in Firebase
-  const handleAddSubject = () => {
-    if (newSubjectName.trim() && selectedCategoryForSubject) {
-      const updatedCategories = categories.map((category) =>
-        category.id === selectedCategoryForSubject.id
-          ? { ...category, items: [...(category.items || []), newSubjectName] } // Ensure items is an array
-          : category
-      );
-      setCategories(updatedCategories);
-
-      // Update Firebase with the new subject
-      const categoryRef = ref(database, `categories/${selectedCategoryForSubject.id}/items`);
-      push(categoryRef, newSubjectName); // Push the new subject to Firebase
-
-      handleCloseAddSubjectModal();
-
-      // Show Snackbar
-      setSnackbarMessage('Subject added successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
     }
   };
 
@@ -141,10 +70,7 @@ const DegreeA = () => {
 
   return (
     <>
-      <AdminSidebar />
-      <Navbar />
-
-      <Box sx={{ marginLeft: '300px', marginRight: '40px', p: 2, bgcolor: 'white', minHeight: '80vh' }}>
+      <Box sx={{ marginLeft: '250px', marginRight: '40px', p: 2, bgcolor: 'white', minHeight: '80vh' }}>
         {/* Add Category Button in the Top Right */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
           <Button
@@ -192,41 +118,6 @@ const DegreeA = () => {
           </Box>
         </Modal>
 
-        {/* Modal for Adding a New Subject */}
-        <Modal open={openAddSubjectModal} onClose={handleCloseAddSubjectModal}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 400,
-              bgcolor: 'background.paper',
-              boxShadow: 24,
-              p: 4,
-              borderRadius: 2,
-            }}
-          >
-            <Typography variant="h6" component="h2" sx={{ fontWeight: 'bold', color: '#1976D2', mb: 2 }}>
-              Add New Subject to {selectedCategoryForSubject?.title}
-            </Typography>
-            <TextField
-              fullWidth
-              label="Subject Name"
-              value={newSubjectName}
-              onChange={(e) => setNewSubjectName(e.target.value)}
-              sx={{ mb: 2 }}
-            />
-            <Button
-              variant="contained"
-              onClick={handleAddSubject}
-              sx={{ bgcolor: '#1976D2', color: 'white', '&:hover': { bgcolor: '#125a9e' } }}
-            >
-              Add Subject
-            </Button>
-          </Box>
-        </Modal>
-
         {/* Modal for Degree Course Details */}
         <Dialog open={openDetailsModal} onClose={handleCloseDetailsModal} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ bgcolor: '#1976D2', color: 'white', fontWeight: 'bold' }}>
@@ -260,17 +151,11 @@ const DegreeA = () => {
               <Box sx={{ bgcolor: '#f4f6f8', p: 2, borderRadius: 2, boxShadow: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography sx={{ fontWeight: 'bold', color: '#1976D2', mb: 1 }}>{category.title}</Typography>
-                  <Box>
-                    <IconButton onClick={() => handleOpenAddSubjectModal(category)}>
-                      <AddIcon sx={{ color: '#1976D2' }} />
-                    </IconButton>
-                    <IconButton onClick={() => handleOpenDetailsModal(category)}>
-                      <ReportGmailerrorredIcon sx={{ color: '#000000' }} />
-                    </IconButton>
-                  </Box>
+                  <IconButton onClick={() => handleOpenDetailsModal(category)}>
+                    <ReportGmailerrorredIcon sx={{ color: '#000000' }} />
+                  </IconButton>
                 </Box>
 
-                {/* Display Subjects as a List */}
                 {category.items.map((item, subIndex) => (
                   <Box
                     key={subIndex}
@@ -282,11 +167,18 @@ const DegreeA = () => {
                       borderBottom: '2px solid #1976D2',
                     }}
                   >
-                    <Typography sx={{ fontWeight: 'bold', color: '#333' }}>
-                      <Link to={`/degree-subject/${encodeURIComponent(item)}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        {item}
-                      </Link>
-                    </Typography>
+                    <Typography sx={{ fontWeight: 'bold', color: '#333' }}>{item}</Typography>
+                    <Box>
+                      <IconButton size="small">
+                        <AddIcon sx={{ color: '#1976D2' }} />
+                      </IconButton>
+                      <IconButton size="small">
+                        <EditIcon sx={{ color: '#1976D2' }} />
+                      </IconButton>
+                      <IconButton size="small">
+                        <DeleteIcon sx={{ color: '#d32f2f' }} />
+                      </IconButton>
+                    </Box>
                   </Box>
                 ))}
               </Box>
@@ -294,18 +186,6 @@ const DegreeA = () => {
           ))}
         </Grid>
       </Box>
-
-      {/* Snackbar for Success Messages */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000} // Auto-close after 3 seconds
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Position at top-right
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
