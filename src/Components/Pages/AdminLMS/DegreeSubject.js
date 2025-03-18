@@ -14,9 +14,9 @@ import {
   IconButton,
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
-import { database } from "../../../Services/Firebase/Firebase-config";
+import { database } from "../../../config/firebase.config";
 import { ref, remove } from "firebase/database";
-import EditIcon from "@mui/icons-material/Edit"; // Import Edit icon
+import EditIcon from "@mui/icons-material/Edit";
 
 const DegreeSubject = () => {
   const { subjectName } = useParams();
@@ -29,7 +29,7 @@ const DegreeSubject = () => {
 
   // Popup state for updating Coursework 1 and Coursework 2
   const [updatePopupOpen, setUpdatePopupOpen] = React.useState(false);
-  const [currentCoursework, setCurrentCoursework] = React.useState("coursework1"); // Track which coursework is being updated
+  const [currentCoursework, setCurrentCoursework] = React.useState("coursework1");
   const [coursework1Details, setCoursework1Details] = React.useState({
     description:
       "Please note that {subjectName} coursework 1 is issued as a 'Draft Coursework and is Subject to Moderation.' Please submit the coursework on or before 30th March 2025 before 3:55 p.m. via ELMS.",

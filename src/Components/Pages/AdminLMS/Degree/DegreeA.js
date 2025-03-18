@@ -20,7 +20,7 @@ import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import AddIcon from '@mui/icons-material/Add';
 import AdminSidebar from '../AdminSidebar/AdminSidebar';
 import Navbar from '../../../NavBar/Navbar';
-import { database } from '../../../../Services/Firebase/Firebase-config';
+import { database } from '../../../../config/firebase.config';
 import { ref, push, set, onValue } from 'firebase/database';
 
 const DegreeA = () => {
