@@ -24,9 +24,9 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { v4 as uuidv4 } from 'uuid';
-import { saveUser, checkUserExists } from '../../../../../Services/Firebase/user.service';
+import { saveUser, checkUserExists } from '../../../../../service/firebase/user.service';
 import { CircularProgress, Alert, Snackbar, Backdrop } from '@mui/material';
-import { sendEmail } from '../../../../../Services/mail/email.service'
+import { sendEmail } from '../../../../../service/mail/email.service'
 
 
 // Dummy data

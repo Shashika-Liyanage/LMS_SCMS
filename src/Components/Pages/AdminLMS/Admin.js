@@ -2,16 +2,13 @@ import React from 'react'
 import AdminSidebar from './AdminSidebar/AdminSidebar'
 import Navbar from '../../NavBar/Navbar'
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Typography, IconButton } from '@mui/material';
-import { Book, Badge, Assignment, SchoolOutlined } from '@mui/icons-material';
+import { Box, Grid, Typography } from '@mui/material';
 
 function Admin() {
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
   return (
     <>
-      <AdminSidebar />
-      <Navbar />
+
 
       {/* Main Content Area */}
       <Box
@@ -25,31 +22,19 @@ function Admin() {
           px: { xs: 2, sm: 4 }, // Add padding on small screens
         }}
       >
-        <Grid container spacing={3} sx={{ maxWidth: 800 }}>  {/* Increased spacing for gap */}
-          
+        <Grid container spacing={3} sx={{ maxWidth: 600 }}>  {/* Increased spacing for gap */}
           {/* Certificate */}
           <Grid item xs={12} sm={6}>
             <Box
               sx={{
-                backgroundColor: '#60A5FA', // Lighter blue background
+                backgroundColor: '#83C1E9',
                 padding: '40px',
                 textAlign: 'center',
-                borderRadius: '12px',
-                boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 6,
-                },
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <IconButton sx={{ fontSize: '80px', color: '#fff', marginBottom: '15px' }}>
-                <Assignment />  {/* Changed to Assignment icon */}
-              </IconButton>
-              <Typography variant="h5" sx={{ color: '#fff', fontWeight: 'bold' }}>Certificate</Typography>
-              <Typography sx={{ color: '#fff', fontSize: '16px' }}>
-                Awarded upon successful completion.
-              </Typography>
+              <Typography fontWeight="bold">Certificate</Typography>
             </Box>
           </Grid>
 
@@ -57,25 +42,14 @@ function Admin() {
           <Grid item xs={12} sm={6}>
             <Box
               sx={{
-                backgroundColor: '#60A5FA', // Lighter blue background
+                backgroundColor: '#83C1E9',
                 padding: '40px',
                 textAlign: 'center',
-                borderRadius: '12px',
-                boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 6,
-                },
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <IconButton sx={{ fontSize: '80px', color: '#fff', marginBottom: '15px' }}>
-                <Book />
-              </IconButton>
-              <Typography variant="h5" sx={{ color: '#fff', fontWeight: 'bold' }}>Diploma</Typography>
-              <Typography sx={{ color: '#fff', fontSize: '16px' }}>
-                Provides a foundation in specialized subjects.
-              </Typography>
+              <Typography fontWeight="bold">Diploma</Typography>
             </Box>
           </Grid>
 
@@ -83,59 +57,37 @@ function Admin() {
           <Grid item xs={12} sm={6}>
             <Box
               sx={{
-                backgroundColor: '#60A5FA', // Lighter blue background
+                backgroundColor: '#83C1E9',
                 padding: '40px',
                 textAlign: 'center',
-                borderRadius: '12px',
-                boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 6,
-                },
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <IconButton sx={{ fontSize: '80px', color: '#fff', marginBottom: '15px' }}>
-                <Badge />
-              </IconButton>
-              <Typography variant="h5" sx={{ color: '#fff', fontWeight: 'bold' }}>HND</Typography>
-              <Typography sx={{ color: '#fff', fontSize: '16px' }}>
-                Higher National Diploma for advanced knowledge and skills.
-              </Typography>
+              <Typography fontWeight="bold">HND</Typography>
             </Box>
           </Grid>
 
           {/* Degree */}
           <Grid item xs={12} sm={6}>
             <Box
-              onClick={() => navigate('degreeAdmin')}
+              onClick={() => navigate('/admin/degreeAdmin')}
               sx={{
-                backgroundColor: '#60A5FA', // Lighter blue background
+                backgroundColor: '#83C1E9',
                 padding: '40px',
                 textAlign: 'center',
-                borderRadius: '12px',
-                boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 6,
-                },
+                borderRadius: '8px',
+                boxShadow: 2,
               }}
             >
-              <IconButton sx={{ fontSize: '80px', color: '#fff', marginBottom: '15px' }}>
-                <SchoolOutlined />  {/* Changed to SchoolOutlined icon */}
-              </IconButton>
-              <Typography variant="h5" sx={{ color: '#fff', fontWeight: 'bold' }}>Degree</Typography>
-              <Typography sx={{ color: '#fff', fontSize: '16px' }}>
-                Undergraduate studies leading to a professional career.
-              </Typography>
+              <Typography fontWeight="bold">Degree</Typography>
             </Box>
           </Grid>
-
         </Grid>
       </Box>
+
     </>
-  );
+  )
 }
 
-export default Admin;
+export default Admin

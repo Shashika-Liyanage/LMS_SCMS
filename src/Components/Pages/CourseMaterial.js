@@ -1,177 +1,311 @@
-import React from "react";
-import { Box, Typography, Button, Link, Alert, Snackbar, TextField } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  Paper,
+  Grid,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
 
-const CourseMaterials = ({ onRemoveSubject }) => {
-  const { subjectName } = useParams(); // Get the subjectName from the URL
-  const navigate = useNavigate(); // Use navigate to redirect
+const CourseMaterials = () => {
 
-  // Snackbar state
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
 
-  // Handle Snackbar close
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbarOpen(false);
+  // Course data
+  const course = {
+    title: "Advance Data Modelling",
+    upcomingAssignments: [
+      {
+        assignment: "C16:32.0 - Advanced Dat...",
+        deadline: "30/03/2025 15:55",
+      },
+    ],
+    materials: [
+      { week: "Week 1", learningOutcome: "LO1", fileUrl: "https://example.com/week1.pdf" },
+      { week: "Week 2", learningOutcome: "LO2", fileUrl: "https://example.com/week2.pdf" },
+      { week: "Week 3", learningOutcome: "LO3", fileUrl: "https://example.com/week3.pdf" },
+    ],
   };
 
-  // Handle Remove Subject (Only UI Removal)
-  const handleRemoveSubject = () => {
-    try {
-      // Show success message
-      setSnackbarMessage("Subject removed from UI successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
+  // State for controlling the pop-up dialog
+  const [openUploadDialog, setOpenUploadDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState(""); 
 
-      // Call the callback function to remove the subject from the parent's state
-      onRemoveSubject(subjectName);
-
-      // Navigate back to the DegreeA page after 2 seconds
-      setTimeout(() => {
-        navigate("/admin/degreeAdmin"); // Replace with the correct path to DegreeA
-      }, 2000);
-    } catch (error) {
-      // Show error message
-      setSnackbarMessage("Failed to remove subject from UI. Please try again.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      console.error("Error removing subject from UI:", error);
+  // Handle sending a new message
+const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      setMessages([...messages, { sender: "You", text: newMessage }]);
+      setNewMessage("");
     }
+  };
+
+  // Handle opening the pop-up dialog
+  const handleOpenDialog = (material) => {
+    setSelectedMaterial(material);
+    setOpenDialog(true);
+  };
+
+  // Handle closing the pop-up dialog
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  // Handle downloading the lecture material
+  const handleDownload = () => {
+    if (selectedMaterial) {
+      window.open(selectedMaterial.fileUrl, "_blank"); // Open the file URL in a new tab
+      handleCloseDialog(); // Close the dialog after download
+    }
+  };
+
+  // Handle opening the upload permission pop-up dialog
+  const handleOpenUploadDialog = () => {
+    setOpenUploadDialog(true);
+  };
+
+  // Handle closing the upload permission pop-up dialog
+  const handleCloseUploadDialog = () => {
+    setOpenUploadDialog(false);
+  };
+
+  // Handle uploading the assignment
+  const handleUpload = () => {
+    console.log("Assignment uploaded!");
+    handleCloseUploadDialog(); // Close the dialog after upload
   };
 
   return (
-    <Box
-      sx={{
-        padding: 3,
-        bgcolor: "#f8f9fb",
-        minHeight: "80vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {/* Title outside the box */}
-      <Typography variant="h5" fontWeight="bold" sx={{ mb: 2, alignSelf: "flex-start", ml: 3 }}>
-        {decodeURIComponent(subjectName)} {/* Decode the subject name */}
+    <Box sx={{ padding: 3 }}>
+      {/* Course Title */}
+      <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+        {course.title}
       </Typography>
 
-      {/* Main content container */}
-      <Box
+      {/* Upcoming Assignments */}
+      <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+        Upcoming Assignments
+      </Typography>
+      <Paper elevation={3} 
+      sx={{ padding: 2, 
+            marginBottom: 4,
+            cursor: "pointer", // Add pointer cursor
+          "&:hover": {
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)", // Add hover effect
+          },
+        }}
+        onClick={handleOpenUploadDialog}
+        >
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+              Assignment
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+              Deadline
+            </Typography>
+          </Grid>
+          {course.upcomingAssignments.map((event, index) => (
+            <React.Fragment key={index}>
+              <Grid item xs={6}>
+                <Typography variant="body1">{event.assignment}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">{event.deadline}</Typography>
+              </Grid>
+            </React.Fragment>
+          ))}
+        </Grid>
+      </Paper>
+
+      {/* All Materials */}
+      <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+        All Materials
+      </Typography>
+      <Paper elevation={3} sx={{ padding: 2, marginBottom: 4 }}>
+        <List>
+          {course.materials.map((material, index) => (
+            <ListItem
+              key={index}
+              button
+              onClick={() => handleOpenDialog(material)} // Open pop-up on click
+              sx={{
+                "&:hover": {
+                  backgroundColor: "#f5f5f5", // Add hover effect
+                  transform: "scale(1.02)", // Slight zoom effect
+                  transition: "transform 0.2s ease-in-out", // Smooth transition
+                },
+                borderRadius: "8px", // Rounded corners
+                marginBottom: "8px", // Spacing between items
+              }}
+            >
+              <ListItemText
+                primary={`${material.week}: ${material.learningOutcome}`}
+                primaryTypographyProps={{ fontWeight: "bold" }} // Bold text
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+
+      {/* Communication Section */}
+<Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+  Communication
+</Typography>
+<Paper elevation={3} sx={{ padding: 2, marginBottom: 4 }}>
+  <Box sx={{ height: "200px", overflowY: "auto", marginBottom: 2 }}>
+    <List>
+      {messages.map((message, index) => (
+        <ListItem key={index}>
+          <ListItemText
+            primary={`${message.sender}: ${message.text}`}
+          />
+        </ListItem>
+      ))}
+    </List>
+  </Box>
+  <Grid container spacing={2}>
+    <Grid item xs={7}>
+      <TextField
+        fullWidth
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
+        placeholder="Type your message..."
+      />
+    </Grid>
+    <Grid item xs={2.5}>
+      <Button
+        variant="contained"
+        fullWidth
+        onClick={handleSendMessage}
         sx={{
-          width: "90%",
-          maxWidth: 900,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          position: "relative",
+          backgroundColor: "#3f51b5", // Blue color
+          "&:hover": { backgroundColor: "#303f9f" }, // Darker blue on hover
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2 }}>
-          {/* Left Section: Coursework */}
-          <Box sx={{ flex: 1, bgcolor: "white", p: 3, boxShadow: 3, borderRadius: 2 }}>
-            <Typography fontWeight="bold" sx={{ mb: 2 }}>Coursework</Typography>
-
-            <Box sx={{ bgcolor: "#f1f1f1", p: 2, borderRadius: 2, boxShadow: 1, mb: 2 }}>
-              <Typography fontWeight="bold" sx={{ mb: 1 }}>Course Work 02</Typography>
-              <Typography fontSize={14}>
-                Please note that {decodeURIComponent(subjectName)} coursework 2 is issued as a "Draft Coursework and is Subject to
-                Moderation." Please submit the coursework on or before 30th March 2025 before 3:55 p.m. via ELMS.
-              </Typography>
-              <Typography fontSize={14} sx={{ mt: 1 }}><strong>Submission Time:</strong> 30/03/2025 15:55</Typography>
-              <Typography fontSize={14}><strong>Marks Release Time:</strong> 14/05/2025 10:29</Typography>
-              <Typography fontWeight="bold" sx={{ mt: 1 }}>Resource:</Typography>
-              <Link href="#" color="primary">Word - Document</Link>
-            </Box>
-          </Box>
-
-          {/* Right Section: Subject Materials */}
-          <Box sx={{ flex: 1, bgcolor: "white", p: 3, boxShadow: 3, borderRadius: 2 }}>
-            <Typography fontWeight="bold" sx={{ mb: 2 }}>Subject Materials</Typography>
-            <Box sx={{ bgcolor: "#f1f1f1", p: 2, borderRadius: 2, boxShadow: 1 }}>
-              <Typography
-                fontSize={14}
-                sx={{ borderBottom: "1px solid #1976D2", py: 1, display: 'flex', justifyContent: 'space-between' }}
-              >
-                Week 01 <Link href="#" color="primary">Download</Link>
-              </Typography>
-              <Typography
-                fontSize={14}
-                sx={{ borderBottom: "1px solid #1976D2", py: 1, display: 'flex', justifyContent: 'space-between' }}
-              >
-                Week 02 <Link href="#" color="primary">Download</Link>
-              </Typography>
-              <Typography
-                fontSize={14}
-                sx={{ borderBottom: "1px solid #1976D2", py: 1, display: 'flex', justifyContent: 'space-between' }}
-              >
-                Week 03 <Link href="#" color="primary">Download</Link>
-              </Typography>
-              <Typography
-                fontSize={14}
-                sx={{ borderBottom: "1px solid #1976D2", py: 1, display: 'flex', justifyContent: 'space-between' }}
-              >
-                Week 04 <Link href="#" color="primary">Download</Link>
-              </Typography>
-              <Typography
-                fontSize={14}
-                sx={{ borderBottom: "1px solid #1976D2", py: 1, display: 'flex', justifyContent: 'space-between' }}
-              >
-                Week 05 <Link href="#" color="primary">Download</Link>
-              </Typography>
-              <Typography
-                fontSize={14}
-                sx={{ borderBottom: "1px solid #1976D2", py: 1, display: 'flex', justifyContent: 'space-between' }}
-              >
-                Week 06 <Link href="#" color="primary">Download</Link>
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Communication Section */}
-        <Box sx={{ bgcolor: "white", p: 3, boxShadow: 3, borderRadius: 2 }}>
-          <Typography fontWeight="bold" sx={{ mb: 2 }}>Communication</Typography>
-          <Box sx={{ bgcolor: "#f1f1f1", p: 2, borderRadius: 2, boxShadow: 1 }}>
-            <TextField
-              fullWidth
-              placeholder="Type message..."
-              sx={{ mb: 2 }}
-            />
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-              <Button variant="contained" color="primary">Send</Button>
-              <Button variant="outlined" color="secondary">Clear</Button>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* Remove Button positioned at the top-right corner of the page */}
-      <Box sx={{ position: "fixed", top: 630, right: 20, zIndex: 1000 }}>
-        <Button
-          variant="contained"
-          color="error"
-          sx={{ borderRadius: 2 }}
-          onClick={handleRemoveSubject} // Call handleRemoveSubject on click
-        >
-          Remove Subject
-        </Button>
-      </Box>
-
-      {/* Snackbar for Success/Error Messages */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000} // Auto-close after 3 seconds
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }} // Position at top-right
+        Send
+      </Button>
+    </Grid>
+    <Grid item xs={2.5}>
+      <Button
+        variant="contained"
+        fullWidth
+        onClick={() => setMessages([])}
+        sx={{
+          backgroundColor: "#ff4444", 
+          "&:hover": { backgroundColor: "#cc0000" }, 
+        }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: "100%" }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+        Clear
+      </Button>
+    </Grid>
+  </Grid>
+</Paper>
+
+      {/* Upload Permission Pop-Up Dialog */}
+      <Dialog open={openUploadDialog} onClose={handleCloseUploadDialog}>
+        <DialogTitle>Upload Assignment</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" sx={{ marginBottom: 2 }}>
+            You are uploading the assignment:{" "}
+            <strong>{course.upcomingAssignments[0].assignment}</strong>
+          </Typography>
+          <TextField
+            fullWidth
+            label="Upload File"
+            type="file"
+            InputLabelProps={{ shrink: true }}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            fullWidth
+            label="Comments"
+            multiline
+            rows={4}
+            placeholder="Add any comments or notes..."
+          />
+        </DialogContent>
+        <DialogActions>
+          {/* Cancel Button */}
+          <Button
+            onClick={handleCloseUploadDialog}
+            sx={{
+              backgroundColor: "#ff4444", // Red color
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#cc0000", // Darker red on hover
+              },
+            }}
+          >
+            Cancel
+          </Button>
+
+          {/* Upload Button */}
+          <Button
+            onClick={handleUpload}
+            sx={{
+              backgroundColor: "#00C851", // Green color
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#007E33", // Darker green on hover
+              },
+            }}
+          >
+            Upload
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Pop-Up Dialog for Download Confirmation */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Download Lecture Material</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Are you sure you want to download the material for{" "}
+            <strong>{selectedMaterial?.week}</strong>?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          {/* Cancel Button */}
+          <Button
+            onClick={handleCloseDialog}
+            sx={{
+              backgroundColor: "#ff4444", // Red color
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#cc0000", // Darker red on hover
+              },
+            }}
+          >
+            Cancel
+          </Button>
+
+          {/* Download Button */}
+          <Button
+            onClick={handleDownload}
+            sx={{
+              backgroundColor: "#00C851", // Green color
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#007E33", // Darker green on hover
+              },
+            }}
+          >
+            Download
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
